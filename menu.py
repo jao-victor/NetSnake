@@ -2,7 +2,7 @@ import os
 
 
 def print_automation_menu():
-    limpar_tela()
+    #limpar_tela()
     print()
     print()
     print()

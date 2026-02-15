@@ -2,7 +2,7 @@ from napalm import get_network_driver
 import os
 import sys
 from dotenv import load_dotenv
-from menu import print_main_menu, print_banner
+from menu import print_main_menu, print_banner, limpar_tela
 from functions import *
 
 
@@ -22,22 +22,23 @@ passwd = os.getenv('PASS')
 if __name__ == "__main__":
     print_banner()
 
-    
-
     while True:
-        
         print_main_menu()
         
-        option = int(input())
+        try:
+            option = int(input())
 
-        if (option == 0):
-            sys.exit()
-        elif (option == 1):
-            automation()
-            
-        elif (option == 2):
-            pass
-        elif (option == 3):
-            pass
-        else:
-            print ("Opção inválida!")
+            if (option == 0):
+                sys.exit()
+            elif (option == 1):
+                limpar_tela()
+                automation()
+                
+            elif (option == 2):
+                pass
+            elif (option == 3):
+                pass
+            else:
+                print ("Opção inválida!")
+        except ValueError:
+            print("Apenas números, por favor...")
