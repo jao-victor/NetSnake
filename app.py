@@ -11,13 +11,6 @@ user = os.getenv('USER')
 passwd = os.getenv('PASS')
 
 
-#driver = get_network_driver('huawei_vrp')
-#devices = []
-#config = str()
-
-
-
-
 
 if __name__ == "__main__":
     print_banner()
@@ -30,14 +23,21 @@ if __name__ == "__main__":
 
             if (option == 0):
                 sys.exit()
+                
             elif (option == 1):
                 limpar_tela()
                 automation()
                 
             elif (option == 2):
-                pass
+                path = "./configs"
+                name_file = input("Digite o nome do arquivo de configuração:").strip()
+                create_file(path, name_file)
+
             elif (option == 3):
-                pass
+                path = "./hosts"
+                name_file = input("Digite o nome do arquivo de Hosts:").strip()
+                create_file(path, name_file)
+
             else:
                 print ("Opção inválida!")
         except ValueError:

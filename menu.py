@@ -1,8 +1,8 @@
 import os
 
 
-def print_automation_menu():
-    #limpar_tela()
+def print_automation_menu(config_file, host_file):
+
     print()
     print()
     print()
@@ -11,16 +11,14 @@ def print_automation_menu():
     print("=" * 50)
     print("  [1] - Selecionar Arquivo de Host")
     print("  [2] - Selecionar Arquivos de Configuração")
-    print("  [3] - Definir Configuração")
-    print("  [4] - Definir Hosts")
-    print("  [5] - Executar Automação")
-    print("  [6] - Ajuda")
+    print("  [3] - Executar Automação")
+    print("  [4] - Ajuda")
     print("-" * 50)
     print("  [0] - Voltar / Sair")
-    print("=" * 50)
+    print("*" * 50)
+    print(f"Host: {host_file} {" " * 5}  Configuração: {config_file}")
     print()
-    print()
-    print()
+    print("*" * 50)
 
 
 def print_main_menu():
