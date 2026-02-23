@@ -147,19 +147,3 @@ def automation():
 
                     except Exception as e:
                         print(f"[!] Erro ao configurar {host}: {e}")
-
-
-
-
-
-
-
-"""
-Huawei
-ZTE
-Nokia
-Mikrotik
-Fortigate
-Cisco
-Datacom
-"""
