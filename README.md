@@ -1,12 +1,12 @@
 # NetSnake 🐍
 
-**NetSnake** é uma poderosa ferramenta de automação de rede multivendor desenvolvida em Python. Ela simplifica a execução de comandos em múltiplos dispositivos de rede simultaneamente através do protocolo SSH, permitindo uma gestão ágil e eficiente de infraestruturas de rede.
+**NetSnake** é uma ferramenta de automação de rede multivendor desenvolvida em Python. Ela simplifica a execução de comandos em múltiplos dispositivos de rede simultaneamente através do protocolo SSH, permitindo uma gestão ágil e eficiente de infraestruturas de rede.
 
 ---
 
 ## 🚀 Funcionalidades
 
-- **Automação Multivendor:** Execute comandos em dispositivos de diferentes fabricantes (Huawei, Cisco, Juniper, etc).
+- **Automação Multivendor:** Execute comandos em dispositivos de diferentes fabricantes (Huawei, Mikrotik, Juniper, etc).
 - **Gestão de Inventário:** Organize seus dispositivos em arquivos de hosts simples.
 - **Templates de Configuração:** Crie e reutilize scripts de configuração facilmente.
 - **Interface Intuitiva:** Menu interativo via terminal para facilitar a operação.
