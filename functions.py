@@ -1,6 +1,11 @@
 from menu import print_automation_menu
 import os
 import subprocess
+import paramiko
+import time
+from dotenv import load_dotenv
+
+
 
 def create_file(path, file_name):
 
@@ -28,9 +33,11 @@ def create_file(path, file_name):
         print("\n[!] Criação cancelada ou arquivo não salvo.")
 
 
-def search_file(path):
+def search_file(full_path, path):
 
-    if not path:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+    if not full_path:
         print("\n[!] Nanhum arquivo encontrado...")
         return
 
@@ -40,7 +47,7 @@ def search_file(path):
         print("[0] - Voltar")
         print()
 
-        for i, nome in enumerate(path, 1):
+        for i, nome in enumerate(full_path, 1):
             print(f'[{i}] {nome}')
 
         try:
@@ -49,11 +56,12 @@ def search_file(path):
                 return
             else:
 
-                if file >= 1 and file <= len(path):
-                    config_file = path[file-1]
+                if file >= 1 and file <= len(full_path):
+                    config_file = full_path[file-1]
                     print()
                     print(f"Selecionado: {config_file}")
-                    return config_file
+                    full_path_file = os.path.join(BASE_DIR, path, config_file)
+                    return full_path_file
                 else:
                     print()
                     print(f"Erro: O índice {file} não existe. Escolha entre 1 e {len(path)}.")
@@ -78,16 +86,72 @@ def automation():
         elif (option == 1):
 
             files = os.listdir("./hosts")
-            host_file = search_file(files)
+            host_file = search_file(files, "hosts")
            
         elif (option == 2):
             files = os.listdir("./configs")
-            config_file = search_file(files)
+            config_file = search_file(files, "configs")
+            print(config_file)
 
         elif (option == 3):
-
+            load_dotenv()
+            user = os.getenv('USER')
+            passwd = os.getenv('PASS')
+            print(user)
             if host_file is None or config_file is None:
                 print()
                 print ("Antes de executar uma automação, selecione os arquivos de configuração e hosts")
             else:
-                pass
+                
+                client = paramiko.SSHClient()
+                client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                hosts, configs = [], []
+
+                #CARREGA OS HOSTS EM UMA LISTA DE HOSTS
+                with open(host_file, 'r', encoding='utf-8') as file_host:
+                    for line in file_host:
+                        line_host = line.strip()
+                        if line_host:
+                            print(line_host)
+                            hosts.append(line_host)
+                
+                #CARREGA CADA LINHA DE CONFIGURAÇÃO EM UMA LISTA
+                with open(config_file, 'r', encoding='utf-8') as file_config:
+                    for line in file_config:
+                        line_config = line.strip()
+                        if line_config:
+                             configs.append(str(line_config))
+
+                
+                #try:
+                    
+                for host in hosts:
+                    client.connect(host, username=user, password=passwd, timeout=10)
+                    shell = client.invoke_shell()
+                    time.sleep(1)
+                    
+                    for config in configs:
+                        shell.send(config + '\n')
+                        time.sleep(0.5) 
+
+                    client.close()
+                    print(f'host {host} configurado com sucesso!!!')
+
+                #except Exception as e:
+                   #print(f"[!] Erro ao configurar {host}: {e}")
+
+
+
+
+
+
+
+"""
+Huawei
+ZTE
+Nokia
+Mikrotik
+Fortigate
+Cisco
+Datacom
+"""

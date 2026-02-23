@@ -1,0 +1,7 @@
+system-view
+vlan 3999
+desc teste_vlan
+commit
+return
+save
+y
