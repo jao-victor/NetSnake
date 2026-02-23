@@ -1,0 +1,11 @@
+n
+snmp-agent
+snmp-agent community read senhaforte
+snmp-agent sys-info version v2c
+snmp-agent mib-view included ViewAll iso
+commit
+return
+save
+y
+
+

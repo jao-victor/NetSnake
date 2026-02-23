@@ -2,6 +2,7 @@ from menu import print_automation_menu
 import os
 import subprocess
 import paramiko
+from paramiko.ssh_exception import AuthenticationException, SSHException
 import time
 from dotenv import load_dotenv
 
@@ -91,18 +92,18 @@ def automation():
         elif (option == 2):
             files = os.listdir("./configs")
             config_file = search_file(files, "configs")
-            print(config_file)
 
         elif (option == 3):
+
             load_dotenv()
             user = os.getenv('USER')
             passwd = os.getenv('PASS')
-            print(user)
+
             if host_file is None or config_file is None:
                 print()
                 print ("Antes de executar uma automação, selecione os arquivos de configuração e hosts")
+
             else:
-                
                 client = paramiko.SSHClient()
                 client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 hosts, configs = [], []
@@ -112,7 +113,6 @@ def automation():
                     for line in file_host:
                         line_host = line.strip()
                         if line_host:
-                            print(line_host)
                             hosts.append(line_host)
                 
                 #CARREGA CADA LINHA DE CONFIGURAÇÃO EM UMA LISTA
@@ -120,25 +120,33 @@ def automation():
                     for line in file_config:
                         line_config = line.strip()
                         if line_config:
-                             configs.append(str(line_config))
+                            configs.append(str(line_config))
 
-                
-                #try:
-                    
                 for host in hosts:
-                    client.connect(host, username=user, password=passwd, timeout=10)
-                    shell = client.invoke_shell()
-                    time.sleep(1)
-                    
-                    for config in configs:
-                        shell.send(config + '\n')
-                        time.sleep(0.5) 
 
-                    client.close()
-                    print(f'host {host} configurado com sucesso!!!')
+                    try:
+                            
+                        client.connect(host, username=user, password=passwd, timeout=10)
+                        shell = client.invoke_shell()
+                        time.sleep(1)
+                        
+                        for config in configs:
+                            shell.send(config + '\n')
+                            time.sleep(0.5) 
 
-                #except Exception as e:
-                   #print(f"[!] Erro ao configurar {host}: {e}")
+                        client.close()
+                        print(f'host {host} configurado com sucesso!!!')
+
+                    except AuthenticationException:
+                        print(f"[!] ERRO DE AUTENTICAÇÃO: Usuário ou senha incorretos para o host {host}.")
+                        continue 
+
+                    except SSHException as e:
+                        print(f"[!] ERRO DE SSH: Problema de conexão ou algoritmo incompatível em {host}: {e}")
+                        continue
+
+                    except Exception as e:
+                        print(f"[!] Erro ao configurar {host}: {e}")
 
 
 
